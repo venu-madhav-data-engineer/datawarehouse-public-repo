@@ -40,6 +40,12 @@ A rigorous comparative evaluation framework, free-tier optimization guide, and b
 - **Redshift**: Historically required `VACUUM` and `ANALYZE`, though modern Redshift automates much of this; still requires thoughtful table distribution styles (`KEY`, `EVEN`, `ALL`).
 - **ClickHouse**: Requires choosing the correct table engine (`ReplacingMergeTree`, `AggregatingMergeTree`), explicit primary keys, and careful mutation handling (`ALTER UPDATE` is asynchronous and heavy).
 
+### D. Data Authenticity, Integrity & Governance
+- **Constraint Enforcement**: Unlike OLTP databases, Snowflake, BigQuery, and Redshift **do not enforce** `PRIMARY KEY` or `UNIQUE` constraints during `INSERT` (they are informational metadata for query planning). DuckDB is the only engine that strictly validates constraints out-of-the-box.
+- **Historical Authenticity (Time Travel)**: Snowflake provides up to 90 days of Time Travel + 7-day Fail-safe; BigQuery provides 7 days (`FOR SYSTEM_TIME AS OF`); Databricks Delta Log provides commit-by-commit immutable history (`VERSION AS OF`).
+- **Data Lineage**: Databricks (Unity Catalog) and Snowflake (Horizon) provide native column-level lineage tracking without third-party tools.
+- **Format Authenticity**: Open table formats (Apache Iceberg, Delta Lake) prevent vendor lock-in, enabling sovereign control of raw data files.
+
 ---
 
 ## 3. Free Tier Summary & Safety Guardrails
@@ -55,20 +61,20 @@ A rigorous comparative evaluation framework, free-tier optimization guide, and b
 
 ---
 
-## 4. Suggested Repository Structure
+## 4. Documentation & Repository Structure
 
 ```text
-├── README.md                      # Overview & Benchmark comparison
+├── README.md                              # Overview & Benchmark comparison
 ├── docs/
-│   ├── warehouse_comparison.md    # Exhaustive deep dive across all dimensions
-│   ├── free_tier_guide.md         # Step-by-step account setup & cost guards
-│   └── benchmarking_strategy.md   # Benchmark methodology (TPC-H / NYC Taxi)
+│   ├── warehouse_comparison.md            # Exhaustive deep dive across all dimensions
+│   ├── authenticity_and_governance.md     # ACID, constraint enforcement, time travel, lineage & format openness
+│   ├── free_tier_guide.md                 # Step-by-step account setup & cost guards
+│   └── benchmarking_strategy.md           # Benchmark methodology (NYC Taxi / TPC-H)
 ├── benchmarks/
-│   ├── datasets/                  # Scripts to pull sample data (NYC Taxi / Parquet)
-│   ├── duckdb/                    # DuckDB SQL & Python benchmark scripts
-│   ├── bigquery/                  # BigQuery setup DDL and query scripts
-│   ├── snowflake/                 # Snowflake warehouse DDL and query scripts
-│   ├── redshift/                  # Redshift Serverless DDL & query scripts
-│   └── clickhouse/                # ClickHouse DDL & query scripts
-└── results/                       # Execution time & cost reporting templates
+│   ├── duckdb/                            # DuckDB SQL & Python benchmark runner (2M test records)
+│   ├── bigquery/                          # BigQuery setup DDL and query scripts
+│   ├── snowflake/                         # Snowflake warehouse DDL and query scripts
+│   ├── redshift/                          # Redshift Serverless DDL & query scripts
+│   └── clickhouse/                        # ClickHouse DDL & query scripts
 ```
+

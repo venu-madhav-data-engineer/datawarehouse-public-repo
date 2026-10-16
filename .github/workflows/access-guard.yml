@@ -1,0 +1,73 @@
+name: Repository Access & Author Guard
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    types: [opened, reopened, synchronize]
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  verify-author-and-actor:
+    name: Verify Authorized Contributor
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify GitHub Actor
+        run: |
+          ALLOWED_ACTOR="venu-madhav-data-engineer"
+          CURRENT_ACTOR="${{ github.actor }}"
+          
+          echo "Triggering Actor: $CURRENT_ACTOR"
+          echo "Allowed Actor:    $ALLOWED_ACTOR"
+          
+          if [ "$CURRENT_ACTOR" != "$ALLOWED_ACTOR" ]; then
+            echo "::error::Access Denied: Only $ALLOWED_ACTOR is authorized to trigger actions, push commits, or open Pull Requests in this repository."
+            exit 1
+          fi
+
+      - name: Verify Pull Request Originator
+        if: github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
+        run: |
+          ALLOWED_ACTOR="venu-madhav-data-engineer"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          
+          echo "PR Author:     $PR_AUTHOR"
+          echo "Allowed Actor: $ALLOWED_ACTOR"
+          
+          if [ "$PR_AUTHOR" != "$ALLOWED_ACTOR" ]; then
+            echo "::error::Access Denied: Only $ALLOWED_ACTOR is authorized to open Pull Requests and merge in this repository."
+            exit 1
+          fi
+
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify Commit Authorship
+        run: |
+          ALLOWED_EMAIL="with.u.venu@gmail.com"
+          echo "Verifying commit author emails..."
+          
+          if [ "${{ github.event_name }}" = "pull_request" ] || [ "${{ github.event_name }}" = "pull_request_target" ]; then
+            BASE_REF="${{ github.event.pull_request.base.sha }}"
+            HEAD_REF="${{ github.event.pull_request.head.sha }}"
+            COMMITS=$(git log --format="%h %ae %an" "${BASE_REF}..${HEAD_REF}" 2>/dev/null || true)
+          else
+            BEFORE="${{ github.event.before }}"
+            AFTER="${{ github.event.after }}"
+            if [ "$BEFORE" = "0000000000000000000000000000000000000000" ] || [ -z "$BEFORE" ]; then
+              COMMITS=$(git log -n 10 --format="%h %ae %an" "$AFTER" 2>/dev/null || true)
+            else
+              COMMITS=$(git log --format="%h %ae %an" "${BEFORE}..${AFTER}" 2>/dev/null || true)
+            fi
+          fi
+          
+          UNAUTHORIZED=$(echo "$COMMITS" | grep -v "$ALLOWED_EMAIL" | grep -v "^$" || true)
+          if [ -n "$UNAUTHORIZED" ]; then
+            echo "::error::Unauthorized commit author detected in range:"
+            echo "$UNAUTHORIZED"
+            exit 1
+          fi
+          echo "All commits in range verified as authored by $ALLOWED_EMAIL."

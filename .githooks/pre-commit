@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Git Pre-Commit Hook: Author Verification & Access Guard
+# ==============================================================================
+# Enforces that only the repository owner (venu-madhav-data-engineer) can
+# make commits to this repository.
+# ==============================================================================
+
+set -e
+
+ALLOWED_EMAIL="with.u.venu@gmail.com"
+ALLOWED_NAME="venu-madhav-data-engineer"
+
+# Retrieve current git user details
+CURRENT_EMAIL=$(git config user.email 2>/dev/null || echo "$GIT_AUTHOR_EMAIL")
+CURRENT_NAME=$(git config user.name 2>/dev/null || echo "$GIT_AUTHOR_NAME")
+
+if [ -z "$CURRENT_EMAIL" ] || [ -z "$CURRENT_NAME" ]; then
+    echo "================================================================================"
+    echo " [ERROR] Git user.name or user.email is not configured!"
+    echo " Commits are restricted to: $ALLOWED_NAME <$ALLOWED_EMAIL>"
+    echo " Please configure your identity using:"
+    echo "   git config user.name \"$ALLOWED_NAME\""
+    echo "   git config user.email \"$ALLOWED_EMAIL\""
+    echo "================================================================================"
+    exit 1
+fi
+
+if [ "$CURRENT_EMAIL" != "$ALLOWED_EMAIL" ] || [ "$CURRENT_NAME" != "$ALLOWED_NAME" ]; then
+    echo "================================================================================"
+    echo " [ACCESS DENIED] Unauthorized commit attempt!"
+    echo " Detected: $CURRENT_NAME <$CURRENT_EMAIL>"
+    echo " Authorized committer: $ALLOWED_NAME <$ALLOWED_EMAIL>"
+    echo ""
+    echo " Only $ALLOWED_NAME is permitted to make commits in this repository."
+    echo " Commit aborted."
+    echo "================================================================================"
+    exit 1
+fi
+
+echo ">> [Access Guard] Pre-commit verification passed for $ALLOWED_NAME <$ALLOWED_EMAIL>."
+exit 0

@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Git Pre-Push Hook: Push Verification & Access Guard
+# ==============================================================================
+# Enforces that only the repository owner (venu-madhav-data-engineer) can
+# push commits to remote repositories.
+# ==============================================================================
+
+set -e
+
+ALLOWED_EMAIL="with.u.venu@gmail.com"
+ALLOWED_NAME="venu-madhav-data-engineer"
+
+# Retrieve current git user details
+CURRENT_EMAIL=$(git config user.email 2>/dev/null || echo "$GIT_AUTHOR_EMAIL")
+CURRENT_NAME=$(git config user.name 2>/dev/null || echo "$GIT_AUTHOR_NAME")
+
+if [ "$CURRENT_EMAIL" != "$ALLOWED_EMAIL" ] || [ "$CURRENT_NAME" != "$ALLOWED_NAME" ]; then
+    echo "================================================================================"
+    echo " [ACCESS DENIED] Unauthorized push attempt!"
+    echo " Detected: $CURRENT_NAME <$CURRENT_EMAIL>"
+    echo " Authorized pusher: $ALLOWED_NAME <$ALLOWED_EMAIL>"
+    echo ""
+    echo " Only $ALLOWED_NAME is permitted to push commits in this repository."
+    echo " Push aborted."
+    echo "================================================================================"
+    exit 1
+fi
+
+# Verify commits being pushed belong exclusively to the authorized author
+remote="$1"
+url="$2"
+z40="0000000000000000000000000000000000000000"
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+    if [ "$local_sha" = "$z40" ]; then
+        # Branch deletion
+        continue
+    fi
+
+    if [ "$remote_sha" = "$z40" ]; then
+        # New branch push - check commits against default branch if exists
+        range="$local_sha"
+        if git rev-parse --verify "${remote}/master" >/dev/null 2>&1; then
+            range="${remote}/master..$local_sha"
+        elif git rev-parse --verify "${remote}/main" >/dev/null 2>&1; then
+            range="${remote}/main..$local_sha"
+        elif git rev-parse --verify master >/dev/null 2>&1 && [ "$local_ref" != "refs/heads/master" ]; then
+            range="master..$local_sha"
+        elif git rev-parse --verify main >/dev/null 2>&1 && [ "$local_ref" != "refs/heads/main" ]; then
+            range="main..$local_sha"
+        fi
+    else
+        range="$remote_sha..$local_sha"
+    fi
+
+    unauthorized_commits=$(git log --format="%h %ae %an" "$range" 2>/dev/null | grep -v "$ALLOWED_EMAIL" || true)
+
+    if [ -n "$unauthorized_commits" ]; then
+        echo "================================================================================"
+        echo " [ACCESS DENIED] Push rejected: Contains commits from unauthorized authors!"
+        echo " Authorized email: $ALLOWED_EMAIL"
+        echo " Unauthorized commits found:"
+        echo "$unauthorized_commits"
+        echo "================================================================================"
+        exit 1
+    fi
+done
+
+echo ">> [Access Guard] Pre-push verification passed for $ALLOWED_NAME <$ALLOWED_EMAIL>."
+exit 0

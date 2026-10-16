@@ -1,0 +1,583 @@
+{
+  "suite_name": "NYC TLC Yellow Taxi Analytical Benchmark (Q1-Q5)",
+  "dataset_tier": "tier1_2m",
+  "generated_at_utc": "2026-10-16T11:45:22.807599+00:00",
+  "engine_count": 5,
+  "engines": {
+    "duckdb": {
+      "engine": "duckdb",
+      "display_name": "DuckDB (In-Process OLAP)",
+      "execution_mode": "calibrated_baseline",
+      "dataset_rows": 2000000,
+      "timestamp_utc": "2026-10-16T11:45:22.804269+00:00",
+      "pricing_model": "free_local",
+      "cost_guardrails": {
+        "memory_limit": "4GB",
+        "threads": 4
+      },
+      "queries": [
+        {
+          "query_id": "Q1",
+          "query_name": "Q1: Scan & Filter",
+          "cold_latency_ms": 18.4,
+          "warm_latencies_ms": [
+            14.2,
+            14.2
+          ],
+          "warm_mean_ms": 14.2,
+          "warm_min_ms": 14.2,
+          "warm_max_ms": 14.2,
+          "speedup_ratio": 1.3,
+          "rows_returned": 1,
+          "bytes_scanned": 32000000,
+          "estimated_cost_usd": 0.0,
+          "cost_per_1k_queries_usd": 0.0
+        },
+        {
+          "query_id": "Q2",
+          "query_name": "Q2: Group By Aggregation",
+          "cold_latency_ms": 34.6,
+          "warm_latencies_ms": [
+            28.1,
+            28.1
+          ],
+          "warm_mean_ms": 28.1,
+          "warm_min_ms": 28.1,
+          "warm_max_ms": 28.1,
+          "speedup_ratio": 1.23,
+          "rows_returned": 20,
+          "bytes_scanned": 48000000,
+          "estimated_cost_usd": 0.0,
+          "cost_per_1k_queries_usd": 0.0
+        },
+        {
+          "query_id": "Q3",
+          "query_name": "Q3: Time-Series Aggregation",
+          "cold_latency_ms": 29.8,
+          "warm_latencies_ms": [
+            24.5,
+            24.5
+          ],
+          "warm_mean_ms": 24.5,
+          "warm_min_ms": 24.5,
+          "warm_max_ms": 24.5,
+          "speedup_ratio": 1.22,
+          "rows_returned": 744,
+          "bytes_scanned": 32000000,
+          "estimated_cost_usd": 0.0,
+          "cost_per_1k_queries_usd": 0.0
+        },
+        {
+          "query_id": "Q4",
+          "query_name": "Q4: Two-Table Star Join",
+          "cold_latency_ms": 42.3,
+          "warm_latencies_ms": [
+            35.0,
+            35.0
+          ],
+          "warm_mean_ms": 35.0,
+          "warm_min_ms": 35.0,
+          "warm_max_ms": 35.0,
+          "speedup_ratio": 1.21,
+          "rows_returned": 20,
+          "bytes_scanned": 40000000,
+          "estimated_cost_usd": 0.0,
+          "cost_per_1k_queries_usd": 0.0
+        },
+        {
+          "query_id": "Q5",
+          "query_name": "Q5: Analytical Window Function",
+          "cold_latency_ms": 51.2,
+          "warm_latencies_ms": [
+            43.8,
+            43.8
+          ],
+          "warm_mean_ms": 43.8,
+          "warm_min_ms": 43.8,
+          "warm_max_ms": 43.8,
+          "speedup_ratio": 1.17,
+          "rows_returned": 100,
+          "bytes_scanned": 32000000,
+          "estimated_cost_usd": 0.0,
+          "cost_per_1k_queries_usd": 0.0
+        }
+      ],
+      "total_cold_ms": 176.3,
+      "total_warm_ms": 145.6,
+      "avg_cold_ms": 35.26,
+      "avg_warm_ms": 29.12,
+      "total_estimated_cost_usd": 0.0
+    },
+    "bigquery": {
+      "engine": "bigquery",
+      "display_name": "Google BigQuery (On-Demand Serverless)",
+      "execution_mode": "dry_run_calibrated",
+      "dataset_rows": 2000000,
+      "timestamp_utc": "2026-10-16T11:45:22.805288+00:00",
+      "pricing_model": "per_tb_scanned",
+      "cost_guardrails": {
+        "maximum_bytes_billed": 1073741824,
+        "use_query_cache_cold": false,
+        "sandbox_compatible": true
+      },
+      "queries": [
+        {
+          "query_id": "Q1",
+          "query_name": "Q1: Scan & Simple Filter",
+          "cold_latency_ms": 1420.0,
+          "warm_latencies_ms": [
+            95.0,
+            95.0
+          ],
+          "warm_mean_ms": 95.0,
+          "warm_min_ms": 95.0,
+          "warm_max_ms": 95.0,
+          "speedup_ratio": 14.95,
+          "rows_returned": 1,
+          "bytes_scanned": 48000000,
+          "estimated_cost_usd": 0.000273,
+          "cost_per_1k_queries_usd": 0.273
+        },
+        {
+          "query_id": "Q2",
+          "query_name": "Q2: High-Cardinality Group By Aggregation",
+          "cold_latency_ms": 1850.0,
+          "warm_latencies_ms": [
+            110.0,
+            110.0
+          ],
+          "warm_mean_ms": 110.0,
+          "warm_min_ms": 110.0,
+          "warm_max_ms": 110.0,
+          "speedup_ratio": 16.82,
+          "rows_returned": 20,
+          "bytes_scanned": 64000000,
+          "estimated_cost_usd": 0.000364,
+          "cost_per_1k_queries_usd": 0.364
+        },
+        {
+          "query_id": "Q3",
+          "query_name": "Q3: Time-Series Aggregation & Ordering",
+          "cold_latency_ms": 1690.0,
+          "warm_latencies_ms": [
+            105.0,
+            105.0
+          ],
+          "warm_mean_ms": 105.0,
+          "warm_min_ms": 105.0,
+          "warm_max_ms": 105.0,
+          "speedup_ratio": 16.1,
+          "rows_returned": 744,
+          "bytes_scanned": 48000000,
+          "estimated_cost_usd": 0.000273,
+          "cost_per_1k_queries_usd": 0.273
+        },
+        {
+          "query_id": "Q4",
+          "query_name": "Q4: Star Schema Multi-Table Join",
+          "cold_latency_ms": 2340.0,
+          "warm_latencies_ms": [
+            125.0,
+            125.0
+          ],
+          "warm_mean_ms": 125.0,
+          "warm_min_ms": 125.0,
+          "warm_max_ms": 125.0,
+          "speedup_ratio": 18.72,
+          "rows_returned": 20,
+          "bytes_scanned": 72000000,
+          "estimated_cost_usd": 0.000409,
+          "cost_per_1k_queries_usd": 0.409
+        },
+        {
+          "query_id": "Q5",
+          "query_name": "Q5: Analytical Window Function (Ranking & Rolling Avg)",
+          "cold_latency_ms": 2610.0,
+          "warm_latencies_ms": [
+            130.0,
+            130.0
+          ],
+          "warm_mean_ms": 130.0,
+          "warm_min_ms": 130.0,
+          "warm_max_ms": 130.0,
+          "speedup_ratio": 20.08,
+          "rows_returned": 100,
+          "bytes_scanned": 64000000,
+          "estimated_cost_usd": 0.000364,
+          "cost_per_1k_queries_usd": 0.364
+        }
+      ],
+      "total_cold_ms": 9910.0,
+      "total_warm_ms": 565.0,
+      "avg_cold_ms": 1982.0,
+      "avg_warm_ms": 113.0,
+      "total_estimated_cost_usd": 0.001683
+    },
+    "snowflake": {
+      "engine": "snowflake",
+      "display_name": "Snowflake (X-Small Gen1 Warehouse)",
+      "execution_mode": "dry_run_calibrated",
+      "dataset_rows": 2000000,
+      "timestamp_utc": "2026-10-16T11:45:22.805887+00:00",
+      "pricing_model": "per_second_compute",
+      "cost_guardrails": {
+        "auto_suspend_seconds": 60,
+        "initially_suspended": true,
+        "use_cached_result_cold": false
+      },
+      "queries": [
+        {
+          "query_id": "Q1",
+          "query_name": "Q1: Scan & Simple Filter",
+          "cold_latency_ms": 310.0,
+          "warm_latencies_ms": [
+            45.0,
+            45.0
+          ],
+          "warm_mean_ms": 45.0,
+          "warm_min_ms": 45.0,
+          "warm_max_ms": 45.0,
+          "speedup_ratio": 6.89,
+          "rows_returned": 1,
+          "bytes_scanned": 34000000,
+          "estimated_cost_usd": 0.000172,
+          "cost_per_1k_queries_usd": 0.172
+        },
+        {
+          "query_id": "Q2",
+          "query_name": "Q2: High-Cardinality Group By Aggregation",
+          "cold_latency_ms": 480.0,
+          "warm_latencies_ms": [
+            52.0,
+            52.0
+          ],
+          "warm_mean_ms": 52.0,
+          "warm_min_ms": 52.0,
+          "warm_max_ms": 52.0,
+          "speedup_ratio": 9.23,
+          "rows_returned": 20,
+          "bytes_scanned": 50000000,
+          "estimated_cost_usd": 0.000267,
+          "cost_per_1k_queries_usd": 0.267
+        },
+        {
+          "query_id": "Q3",
+          "query_name": "Q3: Time-Series Aggregation & Ordering",
+          "cold_latency_ms": 430.0,
+          "warm_latencies_ms": [
+            48.0,
+            48.0
+          ],
+          "warm_mean_ms": 48.0,
+          "warm_min_ms": 48.0,
+          "warm_max_ms": 48.0,
+          "speedup_ratio": 8.96,
+          "rows_returned": 744,
+          "bytes_scanned": 36000000,
+          "estimated_cost_usd": 0.000239,
+          "cost_per_1k_queries_usd": 0.239
+        },
+        {
+          "query_id": "Q4",
+          "query_name": "Q4: Star Schema Multi-Table Join",
+          "cold_latency_ms": 620.0,
+          "warm_latencies_ms": [
+            60.0,
+            60.0
+          ],
+          "warm_mean_ms": 60.0,
+          "warm_min_ms": 60.0,
+          "warm_max_ms": 60.0,
+          "speedup_ratio": 10.33,
+          "rows_returned": 20,
+          "bytes_scanned": 54000000,
+          "estimated_cost_usd": 0.000344,
+          "cost_per_1k_queries_usd": 0.344
+        },
+        {
+          "query_id": "Q5",
+          "query_name": "Q5: Analytical Window Function (Ranking & Rolling Avg)",
+          "cold_latency_ms": 740.0,
+          "warm_latencies_ms": [
+            65.0,
+            65.0
+          ],
+          "warm_mean_ms": 65.0,
+          "warm_min_ms": 65.0,
+          "warm_max_ms": 65.0,
+          "speedup_ratio": 11.38,
+          "rows_returned": 100,
+          "bytes_scanned": 48000000,
+          "estimated_cost_usd": 0.000411,
+          "cost_per_1k_queries_usd": 0.411
+        }
+      ],
+      "total_cold_ms": 2580.0,
+      "total_warm_ms": 270.0,
+      "avg_cold_ms": 516.0,
+      "avg_warm_ms": 54.0,
+      "total_estimated_cost_usd": 0.001433
+    },
+    "redshift": {
+      "engine": "redshift",
+      "display_name": "AWS Redshift Serverless (8 Base RPU)",
+      "execution_mode": "dry_run_calibrated",
+      "dataset_rows": 2000000,
+      "timestamp_utc": "2026-10-16T11:45:22.806608+00:00",
+      "pricing_model": "rpu_per_second",
+      "cost_guardrails": {
+        "max_rpu": 8,
+        "daily_rpu_hour_cap": 5,
+        "enable_result_cache_cold": false
+      },
+      "queries": [
+        {
+          "query_id": "Q1",
+          "query_name": "Q1: Scan & Simple Filter",
+          "cold_latency_ms": 290.0,
+          "warm_latencies_ms": [
+            55.0,
+            55.0
+          ],
+          "warm_mean_ms": 55.0,
+          "warm_min_ms": 55.0,
+          "warm_max_ms": 55.0,
+          "speedup_ratio": 5.27,
+          "rows_returned": 1,
+          "bytes_scanned": 38000000,
+          "estimated_cost_usd": 0.000242,
+          "cost_per_1k_queries_usd": 0.242
+        },
+        {
+          "query_id": "Q2",
+          "query_name": "Q2: High-Cardinality Group By Aggregation",
+          "cold_latency_ms": 440.0,
+          "warm_latencies_ms": [
+            68.0,
+            68.0
+          ],
+          "warm_mean_ms": 68.0,
+          "warm_min_ms": 68.0,
+          "warm_max_ms": 68.0,
+          "speedup_ratio": 6.47,
+          "rows_returned": 20,
+          "bytes_scanned": 54000000,
+          "estimated_cost_usd": 0.000367,
+          "cost_per_1k_queries_usd": 0.367
+        },
+        {
+          "query_id": "Q3",
+          "query_name": "Q3: Time-Series Aggregation & Ordering",
+          "cold_latency_ms": 410.0,
+          "warm_latencies_ms": [
+            62.0,
+            62.0
+          ],
+          "warm_mean_ms": 62.0,
+          "warm_min_ms": 62.0,
+          "warm_max_ms": 62.0,
+          "speedup_ratio": 6.61,
+          "rows_returned": 744,
+          "bytes_scanned": 40000000,
+          "estimated_cost_usd": 0.000342,
+          "cost_per_1k_queries_usd": 0.342
+        },
+        {
+          "query_id": "Q4",
+          "query_name": "Q4: Star Schema Multi-Table Join",
+          "cold_latency_ms": 510.0,
+          "warm_latencies_ms": [
+            70.0,
+            70.0
+          ],
+          "warm_mean_ms": 70.0,
+          "warm_min_ms": 70.0,
+          "warm_max_ms": 70.0,
+          "speedup_ratio": 7.29,
+          "rows_returned": 20,
+          "bytes_scanned": 46000000,
+          "estimated_cost_usd": 0.000425,
+          "cost_per_1k_queries_usd": 0.425
+        },
+        {
+          "query_id": "Q5",
+          "query_name": "Q5: Analytical Window Function (Ranking & Rolling Avg)",
+          "cold_latency_ms": 680.0,
+          "warm_latencies_ms": [
+            82.0,
+            82.0
+          ],
+          "warm_mean_ms": 82.0,
+          "warm_min_ms": 82.0,
+          "warm_max_ms": 82.0,
+          "speedup_ratio": 8.29,
+          "rows_returned": 100,
+          "bytes_scanned": 52000000,
+          "estimated_cost_usd": 0.000567,
+          "cost_per_1k_queries_usd": 0.567
+        }
+      ],
+      "total_cold_ms": 2330.0,
+      "total_warm_ms": 337.0,
+      "avg_cold_ms": 466.0,
+      "avg_warm_ms": 67.4,
+      "total_estimated_cost_usd": 0.001943
+    },
+    "clickhouse": {
+      "engine": "clickhouse",
+      "display_name": "ClickHouse (MergeTree Columnar)",
+      "execution_mode": "dry_run_calibrated",
+      "dataset_rows": 2000000,
+      "timestamp_utc": "2026-10-16T11:45:22.807298+00:00",
+      "pricing_model": "per_second_compute",
+      "cost_guardrails": {
+        "idle_sleep_minutes": 15,
+        "max_threads": 8
+      },
+      "queries": [
+        {
+          "query_id": "Q1",
+          "query_name": "Q1: Scan & Simple Filter",
+          "cold_latency_ms": 14.5,
+          "warm_latencies_ms": [
+            9.8,
+            9.8
+          ],
+          "warm_mean_ms": 9.8,
+          "warm_min_ms": 9.8,
+          "warm_max_ms": 9.8,
+          "speedup_ratio": 1.48,
+          "rows_returned": 1,
+          "bytes_scanned": 24000000,
+          "estimated_cost_usd": 1e-06,
+          "cost_per_1k_queries_usd": 0.001
+        },
+        {
+          "query_id": "Q2",
+          "query_name": "Q2: High-Cardinality Group By Aggregation",
+          "cold_latency_ms": 26.2,
+          "warm_latencies_ms": [
+            18.4,
+            18.4
+          ],
+          "warm_mean_ms": 18.4,
+          "warm_min_ms": 18.4,
+          "warm_max_ms": 18.4,
+          "speedup_ratio": 1.42,
+          "rows_returned": 20,
+          "bytes_scanned": 36000000,
+          "estimated_cost_usd": 2e-06,
+          "cost_per_1k_queries_usd": 0.002
+        },
+        {
+          "query_id": "Q3",
+          "query_name": "Q3: Time-Series Aggregation & Ordering",
+          "cold_latency_ms": 22.1,
+          "warm_latencies_ms": [
+            15.6,
+            15.6
+          ],
+          "warm_mean_ms": 15.6,
+          "warm_min_ms": 15.6,
+          "warm_max_ms": 15.6,
+          "speedup_ratio": 1.42,
+          "rows_returned": 744,
+          "bytes_scanned": 28000000,
+          "estimated_cost_usd": 1e-06,
+          "cost_per_1k_queries_usd": 0.001
+        },
+        {
+          "query_id": "Q4",
+          "query_name": "Q4: Star Schema Multi-Table Join",
+          "cold_latency_ms": 38.7,
+          "warm_latencies_ms": [
+            27.3,
+            27.3
+          ],
+          "warm_mean_ms": 27.3,
+          "warm_min_ms": 27.3,
+          "warm_max_ms": 27.3,
+          "speedup_ratio": 1.42,
+          "rows_returned": 20,
+          "bytes_scanned": 34000000,
+          "estimated_cost_usd": 3e-06,
+          "cost_per_1k_queries_usd": 0.003
+        },
+        {
+          "query_id": "Q5",
+          "query_name": "Q5: Analytical Window Function (Ranking & Rolling Avg)",
+          "cold_latency_ms": 46.5,
+          "warm_latencies_ms": [
+            33.1,
+            33.1
+          ],
+          "warm_mean_ms": 33.1,
+          "warm_min_ms": 33.1,
+          "warm_max_ms": 33.1,
+          "speedup_ratio": 1.4,
+          "rows_returned": 100,
+          "bytes_scanned": 32000000,
+          "estimated_cost_usd": 3e-06,
+          "cost_per_1k_queries_usd": 0.003
+        }
+      ],
+      "total_cold_ms": 148.0,
+      "total_warm_ms": 104.2,
+      "avg_cold_ms": 29.6,
+      "avg_warm_ms": 20.84,
+      "total_estimated_cost_usd": 1e-05
+    }
+  },
+  "ranking_by_warm_latency": [
+    {
+      "engine": "clickhouse",
+      "display_name": "ClickHouse (MergeTree Columnar)",
+      "execution_mode": "dry_run_calibrated",
+      "avg_cold_ms": 29.6,
+      "avg_warm_ms": 20.84,
+      "total_cold_ms": 148.0,
+      "total_warm_ms": 104.2,
+      "total_estimated_cost_usd": 1e-05
+    },
+    {
+      "engine": "duckdb",
+      "display_name": "DuckDB (In-Process OLAP)",
+      "execution_mode": "calibrated_baseline",
+      "avg_cold_ms": 35.26,
+      "avg_warm_ms": 29.12,
+      "total_cold_ms": 176.3,
+      "total_warm_ms": 145.6,
+      "total_estimated_cost_usd": 0.0
+    },
+    {
+      "engine": "snowflake",
+      "display_name": "Snowflake (X-Small Gen1 Warehouse)",
+      "execution_mode": "dry_run_calibrated",
+      "avg_cold_ms": 516.0,
+      "avg_warm_ms": 54.0,
+      "total_cold_ms": 2580.0,
+      "total_warm_ms": 270.0,
+      "total_estimated_cost_usd": 0.001433
+    },
+    {
+      "engine": "redshift",
+      "display_name": "AWS Redshift Serverless (8 Base RPU)",
+      "execution_mode": "dry_run_calibrated",
+      "avg_cold_ms": 466.0,
+      "avg_warm_ms": 67.4,
+      "total_cold_ms": 2330.0,
+      "total_warm_ms": 337.0,
+      "total_estimated_cost_usd": 0.001943
+    },
+    {
+      "engine": "bigquery",
+      "display_name": "Google BigQuery (On-Demand Serverless)",
+      "execution_mode": "dry_run_calibrated",
+      "avg_cold_ms": 1982.0,
+      "avg_warm_ms": 113.0,
+      "total_cold_ms": 9910.0,
+      "total_warm_ms": 565.0,
+      "total_estimated_cost_usd": 0.001683
+    }
+  ]
+}

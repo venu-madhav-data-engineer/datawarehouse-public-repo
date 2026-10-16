@@ -5,8 +5,15 @@ Runs the 5 standardized benchmark queries against an analytical dataset.
 Can generate synthetic NYC taxi trip data (2M+ rows in ~1 sec) or query real Parquet.
 """
 
+from __future__ import annotations
+
 import time
-import duckdb
+from typing import Any
+
+try:
+    import duckdb
+except ImportError:
+    duckdb = None  # type: ignore
 
 BENCHMARK_QUERIES = {
     "Q1: Scan & Filter": """
@@ -88,7 +95,7 @@ BENCHMARK_QUERIES = {
 }
 
 
-def setup_synthetic_data(con: duckdb.DuckDBPyConnection, num_rows: int = 2_000_000) -> tuple[int, float]:
+def setup_synthetic_data(con: Any, num_rows: int = 2_000_000) -> tuple[int, float]:
     """Generate synthetic taxi_zones and yellow_trips tables in-memory."""
     t0 = time.time()
     con.execute("""
@@ -123,7 +130,7 @@ def setup_synthetic_data(con: duckdb.DuckDBPyConnection, num_rows: int = 2_000_0
 
 
 def run_benchmarks(
-    con: duckdb.DuckDBPyConnection,
+    con: Any,
     queries: dict[str, str] | None = None,
     warm_runs: int = 2,
 ) -> list[tuple[str, float, float]]:

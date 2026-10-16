@@ -2,7 +2,13 @@
 __pycache__/
 *.pyc
 .DS_Store
+.pytest_cache/
+.ruff_cache/
+benchmark_output.txt
+sql_test_report.xml
 
 # Research & Discussion
 RESEARCH.md
 research.md
+CI_TEST_PLAN.md
+ci_test_plan.md

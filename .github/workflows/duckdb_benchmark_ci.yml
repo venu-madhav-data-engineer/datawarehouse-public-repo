@@ -2,7 +2,7 @@ name: DuckDB Benchmark & Python CI
 
 on:
   push:
-    branches: [master, main]
+    branches: [master, main, "feat/**"]
   pull_request:
     branches: [master, main]
   workflow_dispatch:
@@ -31,11 +31,11 @@ jobs:
       - name: Lint Python Code with Ruff
         run: ruff check benchmarks/ tests/
 
-      - name: Run DuckDB & Repository Integrity Unit Tests
-        run: pytest -v tests/test_duckdb_benchmark.py tests/test_repo_integrity.py
+      - name: Run DuckDB, Runner Harness & Repository Integrity Tests
+        run: pytest -v tests/test_duckdb_benchmark.py tests/test_benchmark_runners.py tests/test_repo_integrity.py
 
   duckdb-baseline-benchmark:
-    name: Execute 2M-Row DuckDB OLAP Benchmark (Q1-Q5)
+    name: Execute Multi-Warehouse Benchmark Runner & Publish Summary (Q1-Q5)
     needs: lint-and-unit-tests
     runs-on: ubuntu-latest
     steps:
@@ -52,12 +52,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install duckdb
 
-      - name: Run Full 2M-Row DuckDB Benchmark & Publish Summary
+      - name: Run Multi-Warehouse Benchmark Orchestrator & Publish Summary
         run: |
-          python benchmarks/duckdb/run_duckdb_benchmark.py | tee benchmark_output.txt
+          python benchmarks/runners/run_all_benchmarks.py | tee benchmark_output.txt
 
           {
-            echo "## 🦆 DuckDB Local OLAP Benchmark Baseline (2,000,000 Rows)"
+            echo "## 📊 Multi-Warehouse OLAP Benchmark Telemetry Report (Q1–Q5)"
             echo ""
             echo "\`\`\`text"
             cat benchmark_output.txt

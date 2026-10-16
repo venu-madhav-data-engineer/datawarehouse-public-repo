@@ -1,0 +1,72 @@
+{
+  "benchmark_suite": {
+    "name": "NYC TLC Yellow Taxi Analytical Benchmark (Q1-Q5)",
+    "dataset_tier": "tier1_2m",
+    "default_rows": 2000000,
+    "cold_runs": 1,
+    "warm_runs": 2,
+    "results_dir": "benchmarks/results"
+  },
+  "engines": {
+    "duckdb": {
+      "enabled": true,
+      "display_name": "DuckDB (In-Process OLAP)",
+      "pricing_model": "free_local",
+      "rate_usd": 0.0,
+      "cost_guardrails": {
+        "memory_limit": "4GB",
+        "threads": 4
+      }
+    },
+    "bigquery": {
+      "enabled": true,
+      "display_name": "Google BigQuery (On-Demand Serverless)",
+      "sql_file": "benchmarks/bigquery/bigquery_setup_and_benchmarks.sql",
+      "pricing_model": "per_tb_scanned",
+      "rate_usd_per_tb": 6.25,
+      "cost_guardrails": {
+        "maximum_bytes_billed": 1073741824,
+        "use_query_cache_cold": false,
+        "sandbox_compatible": true
+      }
+    },
+    "snowflake": {
+      "enabled": true,
+      "display_name": "Snowflake (X-Small Gen1 Warehouse)",
+      "sql_file": "benchmarks/snowflake/snowflake_setup_and_benchmarks.sql",
+      "pricing_model": "per_second_compute",
+      "warehouse_size": "X-SMALL",
+      "credits_per_hour": 1.0,
+      "usd_per_credit": 2.0,
+      "cost_guardrails": {
+        "auto_suspend_seconds": 60,
+        "initially_suspended": true,
+        "use_cached_result_cold": false
+      }
+    },
+    "redshift": {
+      "enabled": true,
+      "display_name": "AWS Redshift Serverless (8 Base RPU)",
+      "sql_file": "benchmarks/redshift/redshift_setup_and_benchmarks.sql",
+      "pricing_model": "rpu_per_second",
+      "base_rpu": 8,
+      "usd_per_rpu_hour": 0.375,
+      "cost_guardrails": {
+        "max_rpu": 8,
+        "daily_rpu_hour_cap": 5,
+        "enable_result_cache_cold": false
+      }
+    },
+    "clickhouse": {
+      "enabled": true,
+      "display_name": "ClickHouse (MergeTree Columnar)",
+      "sql_file": "benchmarks/clickhouse/clickhouse_setup_and_benchmarks.sql",
+      "pricing_model": "per_second_compute",
+      "usd_per_hour": 0.24,
+      "cost_guardrails": {
+        "idle_sleep_minutes": 15,
+        "max_threads": 8
+      }
+    }
+  }
+}

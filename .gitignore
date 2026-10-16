@@ -6,6 +6,8 @@ __pycache__/
 .ruff_cache/
 benchmark_output.txt
 sql_test_report.xml
+benchmarks/results/raw/*
+!benchmarks/results/raw/.gitkeep
 
 # Research & Discussion
 RESEARCH.md
